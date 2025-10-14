@@ -1,0 +1,44 @@
+version: '3.8'
+name: awsgoo
+services:
+  nginx-proxy:
+    # 경로 수정
+    build: ../../docker_file/nginx
+    ports:
+      - "9889:80"
+     
+    # 없어도 잘 됨
+    # volumes:
+    #  - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      # dependency 수정
+      - myblog
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 50M
+        reservations:
+          cpus: '0.05'
+          memory: 20M
+
+  # nginx default.conf 와 이름 맞추기 위해 수정
+  myblog:
+    build: ../../docker_file/httpd
+    deploy:
+      mode: replicated
+
+      # 수정
+      replicas: 2 # https://docs.docker.com/compose/compose-file/deploy/#replicas
+      resources: # https://docs.docker.com/compose/compose-file/compose-file-v3/#resources
+        limits:
+          cpus: '0.05'
+          memory: 50M
+        reservations:
+          cpus: '0.01'
+          memory: 20M
+    expose:
+      - "80"
+    environment:
+      - VIRTUAL_HOST=aws.google.com,aws.abcdef.com
+      - VIRTUAL_PORT=8

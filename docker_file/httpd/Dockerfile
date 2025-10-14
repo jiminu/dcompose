@@ -1,4 +1,3 @@
-$ cat docker_file/httpd/Dockerfile
 # https://docs.docker.com/engine/reference/builder/
 FROM httpd:2.4.57
 

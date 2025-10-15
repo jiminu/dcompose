@@ -3,7 +3,7 @@ name: awsgoo
 services:
   nginx-proxy:
     # 경로 수정
-    build: ../../docker_file/nginx
+    build: ../../docker_file/nginx_compose
     ports:
       - "9889:80"
      

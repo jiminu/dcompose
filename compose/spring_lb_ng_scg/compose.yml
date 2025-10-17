@@ -20,7 +20,7 @@ services:
     build: ../../../sc-gateway
     # image: jiminu/sc-gateway:0.3.0
     ports:
-      - "9991:9000"
+      - "9000:9000"
     depends_on:
       - myblog
       - sc-eureka

@@ -17,8 +17,8 @@ services:
           memory: 20M
 
   scp-proxy:
-    build: ../../../sc-gateway
-    # image: jiminu/sc-gateway:0.3.0
+# build: ../../../sc-gateway
+    image: jiminu/sc-gateway:0.4.0-arm
     ports:
       - "9000:9000"
     depends_on:
@@ -30,7 +30,7 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://sc-eureka:9090/eureka
 
   myblog:
-    image: jiminu/simple-spring:0.1.2-amd
+    image: jiminu/simple-spring:0.1.2
     ports:
       - "8765:8080"
     deploy:
@@ -51,7 +51,8 @@ services:
       - CPU_STRESS_NUMBER=500
 
   sc-eureka:
-    build: ../../../scloud/eureka-serv
+    # build: ../../../scloud/eureka-serv
+    image: jiminu/eureka-serv:0.1.0-arm
     container_name: sc-eureka
     ports:
       - "9999:9090"
@@ -59,7 +60,8 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://sc-eureka:9090/eureka
 
   user-service:
-    build: ../../../scloud/user-service
+    # build: ../../../scloud/user-service
+    image: jiminu/user-service:0.1.0-arm
     depends_on:
       - sc-eureka
     environment:
@@ -74,7 +76,7 @@ services:
       replicas: 1
       resources: 
         limits:
-          cpus: '0.1'
+          cpus: '1'
           memory: 300M
         reservations:
           cpus: '0.01'

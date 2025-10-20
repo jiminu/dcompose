@@ -1,0 +1,26 @@
+실행 중... (10초마다 로그 출력). 중지하려면 Ctrl+C를 누르세요.
+---------------------------------------------------------
+1760944550,awsgoo-nginx-proxy-1,0.00%
+1760944550,awsgoo-myblog-1,0.28%
+1760944550,awsgoo-user-service-2,0.09%
+1760944550,awsgoo-agent-1,783.92%
+1760944550,awsgoo-scp-proxy-1,0.08%
+1760944550,awsgoo-user-service-1,0.41%
+1760944550,sc-eureka,2.82%
+1760944550,awsgoo-controller-1,32.93%
+1760944582,awsgoo-nginx-proxy-1,0.00%
+1760944582,awsgoo-myblog-1,0.34%
+1760944582,awsgoo-user-service-2,0.09%
+1760944582,awsgoo-agent-1,762.72%
+1760944582,awsgoo-scp-proxy-1,0.09%
+1760944582,awsgoo-user-service-1,0.12%
+1760944582,sc-eureka,0.73%
+1760944582,awsgoo-controller-1,18.13%
+1760944594,awsgoo-nginx-proxy-1,0.00%
+1760944594,awsgoo-myblog-1,1.00%
+1760944594,awsgoo-user-service-2,0.35%
+1760944594,awsgoo-agent-1,1.87%
+1760944594,awsgoo-scp-proxy-1,0.15%
+1760944594,awsgoo-user-service-1,0.41%
+1760944594,sc-eureka,1.09%
+1760944594,awsgoo-controller-1,11.73%

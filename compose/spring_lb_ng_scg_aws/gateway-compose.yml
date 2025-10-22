@@ -10,6 +10,20 @@ services:
       # - EUREKA_SVC_URI=http://sc-eureka:9090
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://sc-eureka:8765/eureka
 
+  nginx-proxy:
+    # build: ../../docker_file/nginx_compose
+    image: jiminu/nginx-compose:0.1.0-amd
+    ports:
+      - "9889:80"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 50M
+        reservations:
+          cpus: '0.05'
+          memory: 20M
+
   sc-eureka:
     # build: ./scloud/eureka-serv
     image: jiminu/eureka-serv:0.1.2-amd

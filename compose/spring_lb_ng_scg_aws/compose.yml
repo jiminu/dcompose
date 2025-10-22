@@ -17,9 +17,9 @@ services:
           cpus: '0.05'
           memory: 20M
 
-  scp-proxy:
+  scg-proxy:
     # build: ../../../sc-gateway
-    image: jiminu/sc-gateway:0.4.0-amd
+    image: jiminu/sc-gateway:0.4.1-amd
     ports:
       - "9000:9000"
     depends_on:
@@ -28,7 +28,7 @@ services:
     environment:
       - HELLO_SVC_URI=http://awsgoo-myblog-1:8080
         #- EUREKA_SVC_URI=http://sc-eureka:9090
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://sc-eureka:9090/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://sc-eureka:8765/eureka
 
   myblog:
     image: jiminu/simple-spring:0.1.2-amd
@@ -62,7 +62,7 @@ services:
 
   user-service:
     # build: ../../../scloud/user-service 
-    image: jiminu/user-service:0.1.0-amd
+    image: jiminu/user-service:0.1.1-amd
     depends_on:
       - sc-eureka
     environment:

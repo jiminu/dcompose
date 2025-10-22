@@ -12,7 +12,7 @@ services:
 
   nginx-proxy:
     # build: ../../docker_file/nginx_compose
-    image: jiminu/nginx-compose:0.1.0-amd
+    image: jiminu/nginx-compose:0.1.2-amd
     ports:
       - "9889:80"
     deploy:

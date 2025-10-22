@@ -33,7 +33,7 @@ services:
   myblog:
     image: jiminu/simple-spring:0.1.2-amd
     ports:
-      - "8765:8080"
+      - "9765:8080"
     deploy:
       mode: replicated
       replicas: 1 
@@ -53,12 +53,12 @@ services:
 
   sc-eureka:
     # build: ../../../scloud/eureka-serv
-    image: jiminu/eureka-serv:0.1.0-amd
+    image: jiminu/eureka-serv:0.1.1-amd
     container_name: sc-eureka
     ports:
-      - "9999:9090"
+      - "8765:8765"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://sc-eureka:9090/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://sc-eureka:8765/eureka
 
   user-service:
     # build: ../../../scloud/user-service 
@@ -66,7 +66,7 @@ services:
     depends_on:
       - sc-eureka
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://sc-eureka:9090/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://sc-eureka:8765/eureka
       - SERVER_PORT=9001
       - CPU_STRESS_NUMBER=500
       - LOGGING_LEVEL_ROOT=INFO

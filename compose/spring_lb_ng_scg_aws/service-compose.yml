@@ -1,9 +1,9 @@
-name: awsgoo
+name: service
 services:
   myblog:
     image: jiminu/simple-spring:0.1.2-amd
     ports:
-      - "8765:8080"
+      - "8080:8080"
     deploy:
       mode: replicated
       replicas: 1
@@ -14,18 +14,19 @@ services:
         reservations:
           cpus: '0.01'
           memory: 20M
-    expose:
-      - "8080"
     environment:
       - VIRTUAL_HOST=aws.google.com,aws.abcdef.com
       - VIRTUAL_PORT=8080
       - CPU_STRESS_NUMBER=500
 
   user-service:
-    # build: ../../../scloud/user-service
-    image: jiminu/user-service:0.1.0-amd
+    build: ./scloud/user-service
+      # image: jiminu/user-service:0.1.0-amd
+    ports:
+      - "9001:9001"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://sc-eureka:9090/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://172.31.9.224:8765/eureka
+      - EC2_PRIVATE_IP=172.31.7.234
       - SERVER_PORT=9001
       - CPU_STRESS_NUMBER=500
       - LOGGING_LEVEL_ROOT=INFO

@@ -1,0 +1,102 @@
+name: awsgoo
+services:
+  nginx-proxy:
+    # build: ../../docker_file/nginx_compose
+    image: jiminu/nginx-compose:0.1.0-amd
+    ports:
+      - "9889:80"
+     
+    depends_on:
+      - myblog
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 50M
+        reservations:
+          cpus: '0.05'
+          memory: 20M
+
+  scp-proxy:
+    # build: ../../../sc-gateway
+    image: jiminu/sc-gateway:0.4.0-amd
+    ports:
+      - "9000:9000"
+    depends_on:
+      - myblog
+      - sc-eureka
+    environment:
+      - HELLO_SVC_URI=http://awsgoo-myblog-1:8080
+        #- EUREKA_SVC_URI=http://sc-eureka:9090
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://sc-eureka:9090/eureka
+
+  myblog:
+    image: jiminu/simple-spring:0.1.2-amd
+    ports:
+      - "8765:8080"
+    deploy:
+      mode: replicated
+      replicas: 1 
+      resources: 
+        limits:
+          cpus: '0.1'
+          memory: 300M
+        reservations:
+          cpus: '0.01'
+          memory: 20M
+    expose: 
+      - "8080"
+    environment:
+      - VIRTUAL_HOST=aws.google.com,aws.abcdef.com
+      - VIRTUAL_PORT=8080
+      - CPU_STRESS_NUMBER=500
+
+  sc-eureka:
+    # build: ../../../scloud/eureka-serv
+    image: jiminu/eureka-serv:0.1.0-amd
+    container_name: sc-eureka
+    ports:
+      - "9999:9090"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://sc-eureka:9090/eureka
+
+  user-service:
+    # build: ../../../scloud/user-service 
+    image: jiminu/user-service:0.1.0-amd
+    depends_on:
+      - sc-eureka
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://sc-eureka:9090/eureka
+      - SERVER_PORT=9001
+      - CPU_STRESS_NUMBER=500
+      - LOGGING_LEVEL_ROOT=INFO
+      - LOGGING_LEVEL_COM_EXAMPLE_USER_SERVICE=DEBUG # 사용자 패키지를 DEBUG로 설정
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG  # Spring Web 관련 로그를 상세히 보고 싶을 때 추가
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources: 
+        limits:
+          cpus: '0.1'
+          memory: 300M
+        reservations:
+          cpus: '0.01'
+          memory: 20M
+
+  controller:
+    image: ngrinder/controller:3.5.9-p1
+    platform: linux/amd64
+    restart: always
+    ports:
+      - "8300:80"
+      - "16001:16001"
+      - "12000-12009:12000-12009"
+    volumes:
+      - ./ngrinder-controller:/opt/ngrinder-controller
+
+  agent:
+    image: ngrinder/agent:3.5.9-p1
+    platform: linux/amd64
+    restart: always
+    links:
+      - controller
